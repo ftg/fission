@@ -59,28 +59,36 @@
 	<cffunction name="render" output="true">
 		
 		<!--- controller --->
+		<cfset controller = getFuse() />
+		<cfset controller = Replace(controller,".","/","ALL") />
+		
 		<cfsavecontent variable="discard_this_output">
-			<cfif FileExists(ExpandPath("/controllers/#getFuse()#.cfm"))>
-				<cfinclude template="/controllers/#getFuse()#.cfm" />
+			<cfif FileExists(ExpandPath("/controllers/#controller#.cfm"))>
+				<cfinclude template="/controllers/#controller#.cfm" />
 			<cfelse>
 				<cfinclude template="/controllers/default.cfm" /> 
 			</cfif>
 		</cfsavecontent>
 
 		<!--- view --->
+		<cfset view = getView() />
+		<cfset view = Replace(view,".","/","ALL") />
+			
 		<cfsavecontent variable="page_content">
-			<cfif FileExists(ExpandPath("/views/#getView()#.cfm"))>
-				<cfinclude template="/views/#getView()#.cfm" />
+			<cfif FileExists(ExpandPath("/views/#view#.cfm"))>
+				<cfinclude template="/views/#view#.cfm" />
 			<cfelse>
 				<cfinclude template="/views/default.cfm" /> 
 			</cfif>
 		</cfsavecontent>
 		
-		<cfset setContent(page_content) />
-		
 		<!--- template --->
-		<cfif FileExists(ExpandPath("/templates/#getTemplate()#.cfm"))>
-			<cfinclude template="/templates/#getTemplate()#.cfm" />
+		<cfset template = getTemplate() />
+		<cfset setContent(page_content) />
+		<!---cfset template = Replace(view,".","/","ALL") /--->
+			
+		<cfif FileExists(ExpandPath("/templates/#template#.cfm"))>
+			<cfinclude template="/templates/#template#.cfm" />
 		<cfelse>
 			<cfinclude template="/templates/default.cfm" />
 		</cfif>
